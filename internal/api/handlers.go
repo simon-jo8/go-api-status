@@ -30,6 +30,7 @@ func (router *Router) handleNextYear(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// TODO: how to handle validation at this level ?
 	request := &models.NextYearRequest{}
 	if err := json.NewDecoder(r.Body).Decode(request); err != nil {
 		router.handleBadRequest(w, "Invalid request")
@@ -47,7 +48,7 @@ func (router *Router) handleNextYear(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-func (router *Router) handleNotFound(w http.ResponseWriter, r *http.Request) {
+func (router *Router) handleNotFound(w http.ResponseWriter) {
 	response := models.Response{
 		Status: "error",
 		Data: map[string]string{

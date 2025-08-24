@@ -12,7 +12,7 @@ func NewRouter() *Router {
 	return &Router{}
 }
 
-// ServeHTTP implements the http.Handler interface
+// ServeHTTP implements the http.Handler interface and the router pattern
 func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -22,6 +22,6 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/nextYear":
 		router.handleNextYear(w, r)
 	default:
-		router.handleNotFound(w, r)
+		router.handleNotFound(w)
 	}
 }
