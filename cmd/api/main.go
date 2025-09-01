@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/simonjoseph/go-status-api/internal/api"
+	"github.com/simonjoseph/go-status-api/api"
 )
 
 func main() {
@@ -13,7 +13,8 @@ func main() {
 	log.Println("Server is running on http://localhost:8080")
 	log.Println("Available routes:")
 	log.Println("- GET /status")
-	log.Println("- POST /nextYear")
+	log.Println("- POST /plusOne")
+	log.Println("- POST /goldenHour")
 
 	err := http.ListenAndServe(":8080", router)
 	if err != nil {

@@ -19,8 +19,10 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/status":
 		router.handleStatus(w, r)
-	case "/nextYear":
-		router.handleNextYear(w, r)
+	case "/plusOne":
+			router.handlePlusOne(w, r)
+	case "/goldenHour":
+		router.handleGoldenHour(w, r)
 	default:
 		router.handleNotFound(w)
 	}

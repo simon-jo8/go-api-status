@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/simonjoseph/go-status-api/internal/models"
+	"github.com/simonjoseph/go-status-api/internal"
+	"github.com/simonjoseph/go-status-api/models"
 )
 
 func (router *Router) handleStatus(w http.ResponseWriter, r *http.Request) {
@@ -24,25 +25,47 @@ func (router *Router) handleStatus(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-func (router *Router) handleNextYear(w http.ResponseWriter, r *http.Request) {
+func (router *Router) handlePlusOne(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		router.handleMethodNotAllowed(w)
 		return
 	}
 
-	// TODO: how to handle validation at this level ?
-	request := &models.NextYearRequest{}
+	request := &models.PlusOneRequest{}
 	if err := json.NewDecoder(r.Body).Decode(request); err != nil {
 		router.handleBadRequest(w, "Invalid request")
 		return
 	}
 
-	nextYearResponse := models.NextYearResponse{
-		Year: request.Year + 1,
+	plusOneResponse := models.PlusOneResponse{
+		Number: internal.PlusOne(request.Number),
 	}
 	response := models.Response{
 		Status: "success",
-		Data:   nextYearResponse,
+		Data:   plusOneResponse,
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response)
+}
+
+func (router *Router) handleGoldenHour(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		router.handleMethodNotAllowed(w)
+		return
+	}
+
+	request := &models.GoldenHourRequest{}
+	if err := json.NewDecoder(r.Body).Decode(request); err != nil {
+		router.handleBadRequest(w, "Invalid request")
+		return
+	}
+
+	goldenHourResponse := models.GoldenHourResponse{
+		GoldenHour: internal.GoldenHour(request.Latitude, request.Longitude, request.Date),
+	}
+	response := models.Response{
+		Status: "success",
+		Data:   goldenHourResponse,
 	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
